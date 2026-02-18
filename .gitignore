@@ -4,3 +4,6 @@ certs/
 # big binaries
 harbor-offline-installer-*.tgz
 artifacts/
+
+# big binaries
+harbor-offline-installer-*.tgz
