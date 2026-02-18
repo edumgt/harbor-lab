@@ -13,7 +13,7 @@ cp .env.example .env
 chmod +x -R chapters/**/run.sh scripts/*.sh
 ./chapters/01_check_env/run.sh
 ```
-
+ 
 ## Chapter 목록
 - Chapter 01: 환경 점검 (Docker Desktop + WSL2)
 - Chapter 02: Harbor(HTTPS self-signed) 설치/기동
