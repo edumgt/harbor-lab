@@ -1,4 +1,3 @@
-\
     #!/usr/bin/env bash
     set -euo pipefail
     source "$(dirname "$0")/../../scripts/lib.sh"
@@ -10,16 +9,27 @@
     need_cmd openssl
     need_cmd docker
 
-    TGZ="harbor-offline-installer-${HARBOR_VERSION#v}.tgz"
+    TGZ="harbor-offline-installer-${HARBOR_VERSION}.tgz"
     URL="https://github.com/goharbor/harbor/releases/download/${HARBOR_VERSION}/${TGZ}"
 
     echo "[1/5] Get Harbor offline installer: ${TGZ}"
     if [[ ! -f "${TGZ}" ]]; then
       echo " - downloading: ${URL}"
-      curl -L -o "${TGZ}" "${URL}"
+      curl -fL --retry 5 --retry-delay 2 --connect-timeout 10 \
+        -H "Accept: application/octet-stream" \
+        -o "${TGZ}" "${URL}"
+
+      # sanity check: gzip/tar 검증 (에러 페이지 저장 방지)
+      if ! tar -tzf "${TGZ}" >/dev/null 2>&1; then
+        echo "[ERROR] Downloaded file is not a valid tgz: ${TGZ}" >&2
+        echo "-------- head --------" >&2
+        head -c 200 "${TGZ}" >&2; echo >&2
+        exit 1
+      fi
     else
       echo " - already exists, skip download"
     fi
+
 
     echo "[2/5] Extract installer -> ./harbor"
     rm -rf harbor
@@ -63,7 +73,7 @@
     DNS.1 = harbor.local
     DNS.2 = localhost
     IP.1  = 127.0.0.1
-    EOF
+EOF
 
       openssl req -new -key harbor.local.key -out harbor.local.csr -config san.cnf
 
@@ -78,7 +88,7 @@
     DNS.1 = harbor.local
     DNS.2 = localhost
     IP.1  = 127.0.0.1
-    EOF
+EOF
 
       openssl x509 -req -in harbor.local.csr -CA ca.crt -CAkey ca.key -CAcreateserial \
         -out harbor.local.crt -days 825 -sha256 -extfile v3.ext
