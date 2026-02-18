@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm-server
+  namespace: llm-infer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vllm-server
+  template:
+    metadata:
+      labels:
+        app: vllm-server
+    spec:
+      imagePullSecrets:
+        - name: harbor-cred
+      containers:
+        - name: vllm
+          image: harbor.local:8443/demo/vllm-skeleton:0.1
+          ports:
+            - containerPort: 8000
+          env:
+            - name: MODEL_PATH
+              value: /models
+            - name: TENSOR_PARALLEL_SIZE
+              value: "3"
+            - name: GPU_MEMORY_UTILIZATION
+              value: "0.90"
+            - name: MAX_MODEL_LEN
+              value: "4096"
+          # (권장) 모델은 볼륨 마운트로 제공 (NFS/CSI 등)
+          volumeMounts:
+            - name: models
+              mountPath: /models
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 60
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: "1"
+              memory: "4Gi"
+            limits:
+              cpu: "4"
+              memory: "16Gi"
+      volumes:
+        - name: models
+          emptyDir: {}
+          # 실무: NFS 예시(환경에 맞게 수정)
+          # nfs:
+          #   server: <NFS_SERVER_IP>
+          #   path: /exports/models/gpt-oss-120b

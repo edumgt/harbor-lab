@@ -1,0 +1,21 @@
+hostname: harbor.local
+
+http:
+  port: 8080
+
+https:
+  port: 8443
+  certificate: /etc/harbor/ssl/harbor.local.crt
+  private_key: /etc/harbor/ssl/harbor.local.key
+
+harbor_admin_password: Harbor12345
+
+database:
+  password: root123
+
+data_volume: ./data
+
+trivy:
+  ignore_unfixed: false
+  skip_update: true
+  offline_scan: true
