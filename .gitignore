@@ -7,3 +7,4 @@ artifacts/
 
 # big binaries
 harbor-offline-installer-*.tgz
+*.tar

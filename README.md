@@ -13,6 +13,22 @@ cp .env.example .env
 chmod +x -R chapters/**/run.sh scripts/*.sh
 ./chapters/01_check_env/run.sh
 ```
+
+---
+```
+# 최신 릴리즈를 받는 대신, 안정적으로 특정 버전 고정 추천
+KIND_VER="v0.22.0"
+
+curl -Lo /usr/local/bin/kind "https://kind.sigs.k8s.io/dl/${KIND_VER}/kind-linux-amd64"
+chmod +x /usr/local/bin/kind
+kind version
+```
+---
+```
+sudo apt-get update
+sudo apt-get install -y kubectl
+kubectl version --client --output=yaml | head
+```
  
 ## Chapter 목록
 - Chapter 01: 환경 점검 (Docker Desktop + WSL2)
