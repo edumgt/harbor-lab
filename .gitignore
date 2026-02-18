@@ -1,3 +1,6 @@
 harbor/harbor-offline-installer-*.tgz
 harbor/
 certs/
+# big binaries
+harbor-offline-installer-*.tgz
+artifacts/
