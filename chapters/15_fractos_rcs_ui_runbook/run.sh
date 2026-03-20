@@ -1,20 +1,19 @@
-\
-    #!/usr/bin/env bash
-    set -euo pipefail
-    source "$(dirname "$0")/../../scripts/lib.sh"
-    ensure_root_dir
-    banner "CH15 — Generate Fractos RCS UI runbook"
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/../../scripts/lib.sh"
+ensure_root_dir
+banner "CH15 — Generate Fractos RCS UI runbook"
 
-    OUT_DIR="artifacts"
-    mkdir -p "${OUT_DIR}"
+OUT_DIR="artifacts"
+mkdir -p "${OUT_DIR}"
 
-    APP_PORT="${APP_PORT:-8000}"
-    HEALTH_PATH="${HEALTH_PATH:-/health}"
-    TP="${TENSOR_PARALLEL_SIZE:-3}"
-    VLLM_IMAGE="${VLLM_IMAGE:-${HARBOR_REGISTRY}/${HARBOR_PROJECT}/vllm-skeleton:0.1}"
-    MODEL_MOUNT_PATH="${MODEL_MOUNT_PATH:-/models}"
+APP_PORT="${APP_PORT:-8000}"
+HEALTH_PATH="${HEALTH_PATH:-/health}"
+TP="${TENSOR_PARALLEL_SIZE:-3}"
+VLLM_IMAGE="${VLLM_IMAGE:-${HARBOR_REGISTRY}/${HARBOR_PROJECT}/vllm-skeleton:0.1}"
+MODEL_MOUNT_PATH="${MODEL_MOUNT_PATH:-/models}"
 
-    cat > "${OUT_DIR}/fractos_rcs_runbook.md" <<EOF
+cat > "${OUT_DIR}/fractos_rcs_runbook.md" <<EOF
 # Fractos RCS(UI 폼) 배포 런북 — 폐쇄망 + vLLM(대형모델) 기준
 
 ## 0) 사전 전제
@@ -104,4 +103,4 @@
 
 EOF
 
-    ok "Created: ${OUT_DIR}/fractos_rcs_runbook.md"
+ok "Created: ${OUT_DIR}/fractos_rcs_runbook.md"

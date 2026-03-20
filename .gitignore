@@ -1,10 +1,11 @@
 harbor/harbor-offline-installer-*.tgz
 harbor/
 certs/
-# big binaries
-harbor-offline-installer-*.tgz
 artifacts/
 
 # big binaries
 harbor-offline-installer-*.tgz
 *.tar
+
+# Windows NTFS Zone.Identifier alternate data streams (created when files are downloaded)
+*:Zone.Identifier
