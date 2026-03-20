@@ -1,32 +1,31 @@
-\
-    #!/usr/bin/env bash
-    set -euo pipefail
-    source "$(dirname "$0")/../../scripts/lib.sh"
-    ensure_root_dir
-    banner "CH14 — Generate Fractos RCS UI parameter sheet"
+#!/usr/bin/env bash
+set -euo pipefail
+source "$(dirname "$0")/../../scripts/lib.sh"
+ensure_root_dir
+banner "CH14 — Generate Fractos RCS UI parameter sheet"
 
-    OUT_DIR="artifacts"
-    mkdir -p "${OUT_DIR}"
+OUT_DIR="artifacts"
+mkdir -p "${OUT_DIR}"
 
-    # Defaults for vLLM service exposure
-    APP_PORT="${APP_PORT:-8000}"
-    NODEPORT="${NODEPORT:-30080}"
-    HEALTH_PATH="${HEALTH_PATH:-/health}"
+# Defaults for vLLM service exposure
+APP_PORT="${APP_PORT:-8000}"
+NODEPORT="${NODEPORT:-30080}"
+HEALTH_PATH="${HEALTH_PATH:-/health}"
 
-    # Model mount info placeholders
-    MODEL_MOUNT_PATH="${MODEL_MOUNT_PATH:-/models}"
-    NFS_SERVER="${NFS_SERVER:-<NFS_SERVER_IP>}"
-    NFS_EXPORT_PATH="${NFS_EXPORT_PATH:-/exports/models/gpt-oss-120b}"
+# Model mount info placeholders
+MODEL_MOUNT_PATH="${MODEL_MOUNT_PATH:-/models}"
+NFS_SERVER="${NFS_SERVER:-<NFS_SERVER_IP>}"
+NFS_EXPORT_PATH="${NFS_EXPORT_PATH:-/exports/models/gpt-oss-120b}"
 
-    # vLLM tuning placeholders
-    TP="${TENSOR_PARALLEL_SIZE:-3}"
-    GMU="${GPU_MEMORY_UTILIZATION:-0.90}"
-    MAXLEN="${MAX_MODEL_LEN:-4096}"
+# vLLM tuning placeholders
+TP="${TENSOR_PARALLEL_SIZE:-3}"
+GMU="${GPU_MEMORY_UTILIZATION:-0.90}"
+MAXLEN="${MAX_MODEL_LEN:-4096}"
 
-    # Image suggestion (use your real pushed image)
-    VLLM_IMAGE="${VLLM_IMAGE:-${HARBOR_REGISTRY}/${HARBOR_PROJECT}/vllm-skeleton:0.1}"
+# Image suggestion (use your real pushed image)
+VLLM_IMAGE="${VLLM_IMAGE:-${HARBOR_REGISTRY}/${HARBOR_PROJECT}/vllm-skeleton:0.1}"
 
-    cat > "${OUT_DIR}/fractos_rcs_env.list" <<EOF
+cat > "${OUT_DIR}/fractos_rcs_env.list" <<EOF
 MODEL_PATH=${MODEL_MOUNT_PATH}
 SERVE_HOST=0.0.0.0
 SERVE_PORT=${APP_PORT}
@@ -35,7 +34,7 @@ GPU_MEMORY_UTILIZATION=${GMU}
 MAX_MODEL_LEN=${MAXLEN}
 EOF
 
-    cat > "${OUT_DIR}/fractos_rcs_ports.md" <<EOF
+cat > "${OUT_DIR}/fractos_rcs_ports.md" <<EOF
 # Ports / HealthCheck / Exposure
 
 - Container Port: ${APP_PORT}
@@ -49,7 +48,7 @@ Notes:
 - In many clusters, NodePort range is 30000-32767.
 EOF
 
-    cat > "${OUT_DIR}/fractos_rcs_params.md" <<EOF
+cat > "${OUT_DIR}/fractos_rcs_params.md" <<EOF
 # Fractos RCS UI 입력값 시트 (복사/참조용)
 
 ## 1) Container Image
@@ -94,8 +93,8 @@ $(cat "${OUT_DIR}/fractos_rcs_env.list")
 
 EOF
 
-    echo
-    ok "Artifacts created:"
-    echo " - ${OUT_DIR}/fractos_rcs_params.md"
-    echo " - ${OUT_DIR}/fractos_rcs_env.list"
-    echo " - ${OUT_DIR}/fractos_rcs_ports.md"
+echo
+ok "Artifacts created:"
+echo " - ${OUT_DIR}/fractos_rcs_params.md"
+echo " - ${OUT_DIR}/fractos_rcs_env.list"
+echo " - ${OUT_DIR}/fractos_rcs_ports.md"
