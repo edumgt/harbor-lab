@@ -54,6 +54,25 @@ kubectl version --client --output=yaml | head
 
 
 
+## Harbor 웹 UI 스크린샷
+
+### 1. 대시보드 (Dashboard)
+프로젝트 수, 이미지 수, 시스템 상태, 스토리지 사용량, 최근 활동 등을 한눈에 확인할 수 있는 메인 화면입니다.
+
+![Harbor Dashboard](docs/images/harbor_dashboard.png)
+
+### 2. 프로젝트 목록 (Projects)
+생성된 프로젝트 목록과 접근 권한(Public/Private), 저장소 수, 할당량(Quota) 등을 관리하는 화면입니다.
+
+![Harbor Projects](docs/images/harbor_projects.png)
+
+### 3. 이미지 아티팩트 목록 (Repository / Artifacts)
+프로젝트 내 특정 저장소에 push된 이미지 태그, 다이제스트, 취약점 스캔 결과, 이미지 크기 등을 확인하는 화면입니다.
+
+![Harbor Repository Artifacts](docs/images/harbor_repository.png)
+
+---
+
 ## 중요한 개념
 - **Harbor는 “내부 레지스트리”**: 폐쇄망에서는 Docker Hub 대신 Harbor만 바라보도록 구성
 - **Docker가 외부망 필수는 아님**: 외부 pull/패키지 다운로드가 인터넷이 필요할 뿐, 내부 Harbor만 쓰면 인터넷 없이 운영 가능
