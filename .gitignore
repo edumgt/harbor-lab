@@ -9,3 +9,7 @@ harbor-offline-installer-*.tgz
 
 # Windows NTFS Zone.Identifier alternate data streams (created when files are downloaded)
 *:Zone.Identifier
+
+.env
+.key
+.claude/
